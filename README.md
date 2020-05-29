@@ -36,28 +36,27 @@ To use the extensions provided in this library, you must `import LayoutAid`.
 
 ```swift
 NSLayoutConstraint.activate {
-    containerView.constrain(
+    containerView.anchor(
         Edges(equalTo: view.layoutMarginsGuide)
     )
 
-    iconView.constrain {
+    iconView.anchor {
         Size(equalTo: CGSize(width: 50, height: 50))
         Center(equalTo: containerView)
     }
 
-    label.constrain {
+    label.anchor {
         Top(equalToSystemSpacingBelow: iconView)
         CenterX(equalTo: containerView.readableContentGuide)
-        Width(lessThanOrEqualTo: containerView.readableContentGuide, multiplier: 0.75)
+        Width(lessThanOrEqualTo: containerView.readableContentGuide, multiplier: 0.5)
     }
 }
 ```
 
-Constraints are best activated in bulk, however, creating complex layouts can get verbose, even with layout anchors.
-This library provides two static methods on `NSLayoutConstraint` using function builders:
+Constraints are best activated in bulk, however, creating complex layouts can get verbose, even with layout anchors. This library provides two static methods on `NSLayoutConstraint` using function builders:
 
-- `build`, for creating constraints
-- `activate`, for creating and activating constraints
+- `build`, for creating constraints using a function builder
+- `activate`, for creating and activating constraints using a function builder
 
 To constrain a view or layout guide use `view.anchor` or `layoutGuide.anchor`. Constrain blocks can be used inside `NSLayoutConstraint.build` or `NSLayoutConstraint.activate`.
 
@@ -83,11 +82,11 @@ Keyboard management in iOS can be tricky. This library provides a lazy accessor 
 
 ```swift
 NSLayoutConstraint.activate {
-    keyboardBackgroundView.constrain(
+    keyboardBackgroundView.anchor(
         Edges(equalTo: view.keyboardLayoutGuide)
     )
 
-    keyboardAvoidingView.constrain {
+    keyboardAvoidingView.anchor {
         Leading(equalTo: view)
         Trailing(equalTo: view)
         Top(equalTo: view.safeAreaLayoutGuide)
