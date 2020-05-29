@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: macOS
-        run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project "LayoutExtensions.xcodeproj" -scheme "LayoutExtensions-Package" -destination "platform=macOS" clean test | xcpretty
+        run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project "LayoutAid.xcodeproj" -scheme "LayoutAid-Package" -destination "platform=macOS" clean test | xcpretty
   Catalyst:
     name: Test Catalyst 
     runs-on: macOS-latest
@@ -26,7 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Catalyst
-        run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project "LayoutExtensions.xcodeproj" -scheme "LayoutExtensions-Package" -destination "platform=macOS" clean test | xcpretty
+        run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project "LayoutAid.xcodeproj" -scheme "LayoutAid-Package" -destination "platform=macOS" clean test | xcpretty
   iOS:
     name: Test iOS 
     runs-on: macOS-latest
@@ -38,7 +38,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: iOS - ${{ matrix.destination }}
-        run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project "LayoutExtensions.xcodeproj" -scheme "LayoutExtensions-Package" -destination "${{ matrix.destination }}" clean test | xcpretty
+        run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project "LayoutAid.xcodeproj" -scheme "LayoutAid-Package" -destination "${{ matrix.destination }}" clean test | xcpretty
   tvOS:
     name: Test tvOS 
     runs-on: macOS-latest
@@ -50,7 +50,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: tvOS - ${{ matrix.destination }}
-        run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project "LayoutExtensions.xcodeproj" -scheme "LayoutExtensions-Package" -destination "${{ matrix.destination }}" clean test | xcpretty
+        run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project "LayoutAid.xcodeproj" -scheme "LayoutAid-Package" -destination "${{ matrix.destination }}" clean test | xcpretty
   spm:
     name: Test with SPM
     runs-on: macOS-latest    
