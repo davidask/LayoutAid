@@ -41,7 +41,8 @@ NSLayoutConstraint.activate {
     )
 
     iconView.anchor {
-        Size(equalTo: CGSize(width: 50, height: 50))
+        Width(equalTo: 50)
+        AspectRatio(equalTo: 1)
         Center(equalTo: containerView)
     }
 
