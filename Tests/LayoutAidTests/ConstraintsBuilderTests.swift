@@ -335,6 +335,7 @@ final class ConstraintsBuilderTests: XCTestCase {
         }
     }
 
+    #if os(iOS)
     func testKeyboardUsageExample() {
         //import LayoutAid
 
@@ -368,6 +369,7 @@ final class ConstraintsBuilderTests: XCTestCase {
             }
         }
     }
+    #endif
     #endif
 }
 
