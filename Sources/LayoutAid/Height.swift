@@ -34,6 +34,6 @@ public struct Height: DimensionConstraintsGenerator {
         self.relation = relation
         self.constant = constant
         self.secondAnchor = secondAnchor
-        self.multiplier = 1
+        self.multiplier = multiplier
     }
 }
