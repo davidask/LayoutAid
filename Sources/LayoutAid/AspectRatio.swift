@@ -12,21 +12,21 @@ public struct AspectRatio {
 
     public let relation: NSLayoutConstraint.Relation
 
-    init(_ relation: NSLayoutConstraint.Relation, to ratio: CGFloat) {
+    public init(_ relation: NSLayoutConstraint.Relation, to ratio: CGFloat) {
         self.relation = relation
         self.aspectRatio = ratio
         self.priority = .required
     }
 
-    init(equalTo ratio: CGFloat) {
+    public init(equalTo ratio: CGFloat) {
         self.init(.equal, to: ratio)
     }
 
-    init(lessThanOrEqualTo ratio: CGFloat) {
+    public init(lessThanOrEqualTo ratio: CGFloat) {
         self.init(.lessThanOrEqual, to: ratio)
     }
 
-    init(greaterThanOrEqualTo ratio: CGFloat) {
+    public init(greaterThanOrEqualTo ratio: CGFloat) {
         self.init(.greaterThanOrEqual, to: ratio)
     }
 }

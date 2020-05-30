@@ -10,6 +10,8 @@ public struct Edges {
 
     public typealias Insets = UIEdgeInsets
 
+    public typealias Edge = UIRectEdge
+
     private enum InsetsType {
         case edgeInsets(Insets)
         case systemSpacing(_ multiplier: CGFloat)
@@ -17,7 +19,8 @@ public struct Edges {
 
     private let insets: InsetsType
 
-    private init(_ relation: NSLayoutConstraint.Relation, to item: LayoutItem, insets: InsetsType) {
+    private init(_ edge: Edge, _ relation: NSLayoutConstraint.Relation, to item: LayoutItem, insets: InsetsType) {
+        self.edge = edge
         self.relation = relation
         self.secondItem = item
         self.insets = insets
@@ -27,9 +30,12 @@ public struct Edges {
 
     public typealias Insets = NSEdgeInsets
 
+    public typealias Edge = Set<NSRectEdge>
+
     private let insets: Insets
 
-    private init(_ relation: NSLayoutConstraint.Relation, to item: LayoutItem, insets: Insets) {
+    private init(_ edge: Edge, _ relation: NSLayoutConstraint.Relation, to item: LayoutItem, insets: Insets) {
+        self.edge = edge
         self.relation = relation
         self.secondItem = item
         self.insets = insets
@@ -41,46 +47,56 @@ public struct Edges {
 
     private let relation: NSLayoutConstraint.Relation
 
+    public let edge: Edge
+
     public var secondItem: LayoutItem
 }
 
 extension Edges: LayoutConstraintsGenerator {
 
     #if canImport(UIKit)
-    public init(equalTo item: LayoutItem, insets: Insets = .zero) {
-        self.init(.equal, to: item, insets: .edgeInsets(insets))
+    public init(_ edge: Edge = .all, equalTo item: LayoutItem, insets: Insets = .zero) {
+        self.init(edge, .equal, to: item, insets: .edgeInsets(insets))
     }
 
-    public init(outsideOrEqualTo item: LayoutItem, insets: Insets = .zero) {
-        self.init(.greaterThanOrEqual, to: item, insets: .edgeInsets(insets))
+    public init(_ edge: Edge = .all, outsideOrEqualTo item: LayoutItem, insets: Insets = .zero) {
+        self.init(edge, .greaterThanOrEqual, to: item, insets: .edgeInsets(insets))
     }
 
-    public init(insideOrEqualTo item: LayoutItem, insets: Insets = .zero) {
-        self.init(.lessThanOrEqual, to: item, insets: .edgeInsets(insets))
+    public init(_ edge: Edge = .all, insideOrEqualTo item: LayoutItem, insets: Insets = .zero) {
+        self.init(edge, .lessThanOrEqual, to: item, insets: .edgeInsets(insets))
     }
 
-    public init(equalTo item: LayoutItem, insetBySystemSpacingMultipliedBy multiplier: CGFloat) {
-        self.init(.equal, to: item, insets: .systemSpacing(multiplier))
+    public init(_ edge: Edge = .all, equalTo item: LayoutItem, insetBySystemSpacingMultipliedBy multiplier: CGFloat) {
+        self.init(edge, .equal, to: item, insets: .systemSpacing(multiplier))
     }
 
-    public init(outsideOrEqualTo item: LayoutItem, insetBySystemSpacingMultipliedBy multiplier: CGFloat) {
-        self.init(.greaterThanOrEqual, to: item, insets: .systemSpacing(multiplier))
+    public init(
+        _ edge: Edge = .all,
+        outsideOrEqualTo item: LayoutItem,
+        insetBySystemSpacingMultipliedBy multiplier: CGFloat
+    ) {
+        self.init(edge, .greaterThanOrEqual, to: item, insets: .systemSpacing(multiplier))
     }
 
-    public init(insideOrEqualTo item: LayoutItem, insetBySystemSpacingMultipliedBy multiplier: CGFloat) {
-        self.init(.lessThanOrEqual, to: item, insets: .systemSpacing(multiplier))
+    public init(
+        _ edge: Edge = .all,
+        insideOrEqualTo item: LayoutItem,
+        insetBySystemSpacingMultipliedBy multiplier: CGFloat
+    ) {
+        self.init(edge, .lessThanOrEqual, to: item, insets: .systemSpacing(multiplier))
     }
     #else
-    public init(equalTo item: LayoutItem, insets: Insets = .zero) {
-        self.init(.equal, to: item, insets: insets)
+    public init(_ edge: Edge = Edge.Element.all, equalTo item: LayoutItem, insets: Insets = .zero) {
+        self.init(edge, .equal, to: item, insets: insets)
     }
 
-    public init(outsideOrEqualTo item: LayoutItem, insets: Insets = .zero) {
-        self.init(.greaterThanOrEqual, to: item, insets: insets)
+    public init(_ edge: Edge = Edge.Element.all, outsideOrEqualTo item: LayoutItem, insets: Insets = .zero) {
+        self.init(edge, .greaterThanOrEqual, to: item, insets: insets)
     }
 
-    public init(insideOrEqualTo item: LayoutItem, insets: Insets = .zero) {
-        self.init(.lessThanOrEqual, to: item, insets: insets)
+    public init(_ edge: Edge = Edge.Element.all, insideOrEqualTo item: LayoutItem, insets: Insets = .zero) {
+        self.init(edge, .lessThanOrEqual, to: item, insets: insets)
     }
 
     #endif
@@ -227,6 +243,33 @@ extension Edges: LayoutConstraintsGenerator {
 public extension Edges.Insets {
     static var zero: Edges.Insets {
         Edges.Insets(top: 0, left: 0, bottom: 0, right: 0)
+    }
+}
+#endif
+
+#if canImport(UIKit)
+public extension Edges.Edge {
+
+    static var vertical: Edges.Edge {
+        [.top, .bottom]
+    }
+
+    static var horizontal: Edges.Edge {
+        [.left, .right]
+    }
+}
+#elseif os(macOS)
+public extension NSRectEdge {
+    static var all: Set<NSRectEdge> {
+        NSRectEdge.horizontal.union(NSRectEdge.vertical)
+    }
+
+    static var vertical: Set<NSRectEdge> {
+        [.minY, .maxY]
+    }
+
+    static var horizontal: Set<NSRectEdge> {
+        [.minX, .minY]
     }
 }
 #endif

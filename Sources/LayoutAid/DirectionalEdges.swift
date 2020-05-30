@@ -4,18 +4,24 @@ import UIKit
 import AppKit
 #endif
 
-@available(macOS 15.15, iOS 11, macCatalyst 13, *)
+@available(macOS 15.15, iOS 13, macCatalyst 13, tvOS 13, *)
 public struct DirectionalEdges {
 
     #if canImport(UIKit)
+
+    public typealias Insets = NSDirectionalEdgeInsets
+
+    public typealias Edge = UIDirectionalRectEdge
+
     private enum InsetsType {
-        case edgeInsets(NSDirectionalEdgeInsets)
+        case edgeInsets(Insets)
         case systemSpacing(_ multiplier: CGFloat)
     }
 
     private let insets: InsetsType
 
-    private init(_ relation: NSLayoutConstraint.Relation, to item: LayoutItem, insets: InsetsType) {
+    private init(_ edge: Edge, _ relation: NSLayoutConstraint.Relation, to item: LayoutItem, insets: InsetsType) {
+        self.edge = edge
         self.relation = relation
         self.secondItem = item
         self.insets = insets
@@ -23,9 +29,14 @@ public struct DirectionalEdges {
 
     #else
 
-    private let insets: NSDirectionalEdgeInsets
+    public typealias Insets = NSDirectionalEdgeInsets
 
-    private init(_ relation: NSLayoutConstraint.Relation, to item: LayoutItem, insets: NSDirectionalEdgeInsets) {
+    public typealias Edge = NSDirectionalRectEdge
+
+    private let insets: Insets
+
+    private init(_ edge: Edge, _ relation: NSLayoutConstraint.Relation, to item: LayoutItem, insets: Insets) {
+        self.edge = edge
         self.relation = relation
         self.secondItem = item
         self.insets = insets
@@ -37,55 +48,62 @@ public struct DirectionalEdges {
 
     private let relation: NSLayoutConstraint.Relation
 
+    public let edge: Edge
+
     public var secondItem: LayoutItem
 }
 
-@available(macOS 15.15, iOS 11, macCatalyst 13, *)
+@available(macOS 15.15, iOS 13, macCatalyst 13, tvOS 13, *)
 extension DirectionalEdges: LayoutConstraintsGenerator {
 
     #if canImport(UIKit)
-    public init(equalTo item: LayoutItem, insets: NSDirectionalEdgeInsets = .zero) {
-        self.init(.equal, to: item, insets: .edgeInsets(insets))
+    public init(_ edge: Edge = .all, equalTo item: LayoutItem, insets: Insets = .zero) {
+        self.init(edge, .equal, to: item, insets: .edgeInsets(insets))
     }
 
-    public init(outsideOrEqualTo item: LayoutItem, insets: NSDirectionalEdgeInsets = .zero) {
-        self.init(.greaterThanOrEqual, to: item, insets: .edgeInsets(insets))
+    public init(_ edge: Edge = .all, outsideOrEqualTo item: LayoutItem, insets: Insets = .zero) {
+        self.init(edge, .greaterThanOrEqual, to: item, insets: .edgeInsets(insets))
     }
 
-    public init(insideOrEqualTo item: LayoutItem, insets: NSDirectionalEdgeInsets = .zero) {
-        self.init(.lessThanOrEqual, to: item, insets: .edgeInsets(insets))
+    public init(_ edge: Edge = .all, insideOrEqualTo item: LayoutItem, insets: Insets = .zero) {
+        self.init(edge, .lessThanOrEqual, to: item, insets: .edgeInsets(insets))
     }
 
-    public init(equalTo item: LayoutItem, insetBySystemSpacingMultipliedBy multiplier: CGFloat) {
-        self.init(.equal, to: item, insets: .systemSpacing(multiplier))
+    public init(_ edge: Edge = .all, equalTo item: LayoutItem, insetBySystemSpacingMultipliedBy multiplier: CGFloat) {
+        self.init(edge, .equal, to: item, insets: .systemSpacing(multiplier))
     }
 
-    public init(outsideOrEqualTo item: LayoutItem, insetBySystemSpacingMultipliedBy multiplier: CGFloat) {
-        self.init(.greaterThanOrEqual, to: item, insets: .systemSpacing(multiplier))
+    public init(
+        _ edge: Edge = .all,
+        outsideOrEqualTo item: LayoutItem,
+        insetBySystemSpacingMultipliedBy multiplier: CGFloat
+    ) {
+        self.init(edge, .greaterThanOrEqual, to: item, insets: .systemSpacing(multiplier))
     }
 
-    public init(insideOrEqualTo item: LayoutItem, insetBySystemSpacingMultipliedBy multiplier: CGFloat) {
-        self.init(.lessThanOrEqual, to: item, insets: .systemSpacing(multiplier))
+    public init(
+        _ edge: Edge = .all,
+        insideOrEqualTo item: LayoutItem,
+        insetBySystemSpacingMultipliedBy multiplier: CGFloat
+    ) {
+        self.init(edge, .lessThanOrEqual, to: item, insets: .systemSpacing(multiplier))
     }
     #else
-    public init(equalTo item: LayoutItem, insets: NSDirectionalEdgeInsets = .zero) {
-        self.init(.equal, to: item, insets: insets)
+    public init(_ edge: Edge = .all, equalTo item: LayoutItem, insets: Insets = .zero) {
+        self.init(edge, .equal, to: item, insets: insets)
     }
 
-    public init(outsideOrEqualTo item: LayoutItem, insets: NSDirectionalEdgeInsets = .zero) {
-        self.init(.greaterThanOrEqual, to: item, insets: insets)
+    public init(_ edge: Edge = .all, outsideOrEqualTo item: LayoutItem, insets: Insets = .zero) {
+        self.init(edge, .greaterThanOrEqual, to: item, insets: insets)
     }
 
-    public init(insideOrEqualTo item: LayoutItem, insets: NSDirectionalEdgeInsets = .zero) {
-        self.init(.lessThanOrEqual, to: item, insets: insets)
+    public init(_ edge: Edge = .all, insideOrEqualTo item: LayoutItem, insets: Insets = .zero) {
+        self.init(edge, .lessThanOrEqual, to: item, insets: insets)
     }
 
     #endif
 
-    private func makeEqualEdgeInsetsConstraints(
-        for item: LayoutItem,
-        insets: NSDirectionalEdgeInsets
-    ) -> [NSLayoutConstraint] {
+    private func makeEqualEdgeInsetsConstraints(for item: LayoutItem, insets: Insets) -> [NSLayoutConstraint] {
         item.anchor {
             Leading(equalTo: secondItem.leadingAnchor, constant: insets.leading)
             Trailing(equalTo: secondItem.trailingAnchor, constant: -insets.trailing)
@@ -95,18 +113,18 @@ extension DirectionalEdges: LayoutConstraintsGenerator {
     }
 
     private func makeGreaterThanOrEqualEdgeInsetsConstraints(
-        for item: LayoutItem, insets: NSDirectionalEdgeInsets
+        for item: LayoutItem, insets: Insets
     ) -> [NSLayoutConstraint] {
         item.anchor {
             Leading(lessThanOrEqualTo: secondItem.leadingAnchor, constant: insets.leading)
-            Trailing(greaterThanOrEqualTo: secondItem.leadingAnchor, constant: -insets.trailing)
+            Trailing(greaterThanOrEqualTo: secondItem.trailingAnchor, constant: -insets.trailing)
             Top(lessThanOrEqualTo: secondItem.topAnchor, constant: insets.top)
             Bottom(greaterThanOrEqualTo: secondItem.bottomAnchor, constant: -insets.bottom)
         }
     }
 
     private func makeLessThanOrEqualEdgeInsetsConstraints(
-        for item: LayoutItem, insets: NSDirectionalEdgeInsets
+        for item: LayoutItem, insets: Insets
     ) -> [NSLayoutConstraint] {
 
         item.anchor {

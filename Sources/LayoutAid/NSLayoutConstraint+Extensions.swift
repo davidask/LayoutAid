@@ -19,9 +19,19 @@ public extension NSLayoutConstraint {
         }
 
         public static func buildExpression<S>(
-            _ expression: S
+            _ expression: S...
         ) -> [NSLayoutConstraint] where S: Sequence, S.Element: NSLayoutConstraint {
-            Array(expression)
+            expression.flatMap { component in
+                component
+            }
+        }
+
+        public static func buildIf(_ component: [NSLayoutConstraint]?) -> [NSLayoutConstraint] {
+            component ?? []
+        }
+
+        public static func buildOptional(_ component: [NSLayoutConstraint]?) -> [NSLayoutConstraint] {
+            component ?? []
         }
 
         public static func buildExpression(
