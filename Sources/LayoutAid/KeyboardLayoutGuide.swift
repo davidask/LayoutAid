@@ -76,10 +76,6 @@ public class KeyboardLayoutGuide: UILayoutGuide {
             return false
         }
 
-        guard let owningView = owningView, owningView.window != nil else {
-            return false
-        }
-
         guard let endFrame = Keyboard.frame(in: owningView) else {
             return false
         }
