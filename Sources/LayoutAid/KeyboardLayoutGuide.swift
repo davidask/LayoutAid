@@ -17,6 +17,10 @@ public class KeyboardLayoutGuide: UILayoutGuide {
                 return
             }
 
+            defer {
+                updateHeightConstraintIfNeeded()
+            }
+
             // If it did, deactivate the previous constraints
             NSLayoutConstraint.deactivate(constraints)
             constraints = []
@@ -60,8 +64,6 @@ public class KeyboardLayoutGuide: UILayoutGuide {
             let newHeightConstraint = heightAnchor.constraint(equalToConstant: 0)
             self.heightConstraint = newHeightConstraint
             constraints.append(newHeightConstraint)
-
-            updateHeightConstraintIfNeeded()
         }
     }
 
@@ -80,7 +82,7 @@ public class KeyboardLayoutGuide: UILayoutGuide {
             return false
         }
 
-        heightConstraint.constant = endFrame.intersection(owningView.bounds).height
+        heightConstraint.constant = endFrame.intersection(owningView?.bounds ?? UIScreen.main.bounds).height
 
         return true
     }
