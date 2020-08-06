@@ -98,7 +98,7 @@ NSLayoutConstraint.activate {
 
 ### UIScrollView extensions
 
-This library can automatically adjust `contentInset` of `UIScrollView` using
+This library can automatically adjust `contentInset` of `UIScrollView` based on keyboard appearance using
 - `UIScrollView.adjustContentInsetForKeyboard()`, to immediately adjust scroll view insets to keyboard
 - `UIScrollView.beginAdjustingContentInsetForKeyboard()`, to start observing keyboard adjusting scroll view insets automatically
 - `UIScrollView.endAdjustingContentInsetForKeyboard()`, to stop observing keyboard adjusting scroll view insets automatically
