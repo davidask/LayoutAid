@@ -105,10 +105,21 @@ extension DirectionalEdges: LayoutConstraintsGenerator {
 
     private func makeEqualEdgeInsetsConstraints(for item: LayoutItem, insets: Insets) -> [NSLayoutConstraint] {
         item.anchor {
-            Leading(equalTo: secondItem.leadingAnchor, constant: insets.leading)
-            Trailing(equalTo: secondItem.trailingAnchor, constant: -insets.trailing)
-            Top(equalTo: secondItem.topAnchor, constant: insets.top)
-            Bottom(equalTo: secondItem.bottomAnchor, constant: -insets.bottom)
+            if edge.contains(.leading) {
+                Leading(equalTo: secondItem.leadingAnchor, constant: insets.leading)
+            }
+
+            if edge.contains(.trailing) {
+                Trailing(equalTo: secondItem.trailingAnchor, constant: -insets.trailing)
+            }
+
+            if edge.contains(.top) {
+                Top(equalTo: secondItem.topAnchor, constant: insets.top)
+            }
+
+            if edge.contains(.bottom) {
+                Bottom(equalTo: secondItem.bottomAnchor, constant: -insets.bottom)
+            }
         }
     }
 
@@ -116,10 +127,21 @@ extension DirectionalEdges: LayoutConstraintsGenerator {
         for item: LayoutItem, insets: Insets
     ) -> [NSLayoutConstraint] {
         item.anchor {
-            Leading(lessThanOrEqualTo: secondItem.leadingAnchor, constant: insets.leading)
-            Trailing(greaterThanOrEqualTo: secondItem.trailingAnchor, constant: -insets.trailing)
+            if edge.contains(.leading) {
+                Leading(lessThanOrEqualTo: secondItem.leadingAnchor, constant: insets.leading)
+            }
+
+            if edge.contains(.trailing) {
+                Trailing(greaterThanOrEqualTo: secondItem.trailingAnchor, constant: -insets.trailing)
+            }
+
+            if edge.contains(.top) {
             Top(lessThanOrEqualTo: secondItem.topAnchor, constant: insets.top)
-            Bottom(greaterThanOrEqualTo: secondItem.bottomAnchor, constant: -insets.bottom)
+            }
+
+            if edge.contains(.bottom) {
+                Bottom(greaterThanOrEqualTo: secondItem.bottomAnchor, constant: -insets.bottom)
+            }
         }
     }
 
@@ -128,10 +150,21 @@ extension DirectionalEdges: LayoutConstraintsGenerator {
     ) -> [NSLayoutConstraint] {
 
         item.anchor {
-            Leading(greaterThanOrEqualTo: secondItem.leadingAnchor, constant: insets.leading)
-            Trailing(lessThanOrEqualTo: secondItem.trailingAnchor, constant: -insets.trailing)
-            Top(greaterThanOrEqualTo: secondItem.topAnchor, constant: insets.top)
-            Bottom(lessThanOrEqualTo: secondItem.bottomAnchor, constant: -insets.bottom)
+            if edge.contains(.leading) {
+                Leading(greaterThanOrEqualTo: secondItem.leadingAnchor, constant: insets.leading)
+            }
+
+            if edge.contains(.trailing) {
+                Trailing(lessThanOrEqualTo: secondItem.trailingAnchor, constant: -insets.trailing)
+            }
+
+            if edge.contains(.top) {
+                Top(greaterThanOrEqualTo: secondItem.topAnchor, constant: insets.top)
+            }
+
+            if edge.contains(.bottom) {
+                Bottom(lessThanOrEqualTo: secondItem.bottomAnchor, constant: -insets.bottom)
+            }
         }
     }
 
@@ -141,10 +174,21 @@ extension DirectionalEdges: LayoutConstraintsGenerator {
         multiplier: CGFloat
     ) -> [NSLayoutConstraint] {
         item.anchor {
-            Leading(equalToSystemSpacingAfter: secondItem.leadingAnchor, multiplier: multiplier)
-            Trailing(equalToSystemSpacingAfter: secondItem.trailingAnchor, multiplier: -multiplier)
-            Top(equalToSystemSpacingBelow: secondItem.topAnchor, multiplier: multiplier)
-            Bottom(equalToSystemSpacingBelow: secondItem.bottomAnchor, multiplier: -multiplier)
+            if edge.contains(.leading) {
+                Leading(equalToSystemSpacingAfter: secondItem.leadingAnchor, multiplier: multiplier)
+            }
+
+            if edge.contains(.trailing) {
+                Trailing(equalToSystemSpacingAfter: secondItem.trailingAnchor, multiplier: -multiplier)
+            }
+
+            if edge.contains(.top) {
+                Top(equalToSystemSpacingBelow: secondItem.topAnchor, multiplier: multiplier)
+            }
+
+            if edge.contains(.bottom) {
+                Bottom(equalToSystemSpacingBelow: secondItem.bottomAnchor, multiplier: -multiplier)
+            }
         }
     }
 
@@ -153,10 +197,18 @@ extension DirectionalEdges: LayoutConstraintsGenerator {
         multiplier: CGFloat
     ) -> [NSLayoutConstraint] {
         item.anchor {
-            Leading(greaterThanOrEqualToSystemSpacingAfter: secondItem.leadingAnchor, multiplier: multiplier)
-            Trailing(lessThanOrEqualToSystemSpacingAfter: secondItem.trailingAnchor, multiplier: -multiplier)
-            Top(greaterThanOrEqualToSystemSpacingBelow: secondItem.topAnchor, multiplier: multiplier)
-            Bottom(lessThanOrEqualToSystemSpacingBelow: secondItem.bottomAnchor, multiplier: -multiplier)
+            if edge.contains(.leading) {
+                Leading(greaterThanOrEqualToSystemSpacingAfter: secondItem.leadingAnchor, multiplier: multiplier)
+            }
+            if edge.contains(.trailing) {
+                Trailing(lessThanOrEqualToSystemSpacingAfter: secondItem.trailingAnchor, multiplier: -multiplier)
+            }
+            if edge.contains(.top) {
+                Top(greaterThanOrEqualToSystemSpacingBelow: secondItem.topAnchor, multiplier: multiplier)
+            }
+            if edge.contains(.bottom) {
+                Bottom(lessThanOrEqualToSystemSpacingBelow: secondItem.bottomAnchor, multiplier: -multiplier)
+            }
         }
     }
 
@@ -165,10 +217,21 @@ extension DirectionalEdges: LayoutConstraintsGenerator {
         multiplier: CGFloat
     ) -> [NSLayoutConstraint] {
         item.anchor {
-            Leading(lessThanOrEqualToSystemSpacingAfter: secondItem.leadingAnchor, multiplier: multiplier)
-            Trailing(greaterThanOrEqualToSystemSpacingAfter: secondItem.trailingAnchor, multiplier: -multiplier)
-            Top(lessThanOrEqualToSystemSpacingBelow: secondItem.topAnchor, multiplier: multiplier)
-            Bottom(greaterThanOrEqualToSystemSpacingBelow: secondItem.bottomAnchor, multiplier: -multiplier)
+            if edge.contains(.leading) {
+                Leading(lessThanOrEqualToSystemSpacingAfter: secondItem.leadingAnchor, multiplier: multiplier)
+            }
+
+            if edge.contains(.trailing) {
+                Trailing(greaterThanOrEqualToSystemSpacingAfter: secondItem.trailingAnchor, multiplier: -multiplier)
+            }
+
+            if edge.contains(.top) {
+                Top(lessThanOrEqualToSystemSpacingBelow: secondItem.topAnchor, multiplier: multiplier)
+            }
+
+            if edge.contains(.bottom) {
+                Bottom(greaterThanOrEqualToSystemSpacingBelow: secondItem.bottomAnchor, multiplier: -multiplier)
+            }
         }
     }
     #endif

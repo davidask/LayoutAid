@@ -23,7 +23,21 @@ public extension LayoutConstraintsGenerator {
 @_functionBuilder
 public struct LayoutConstraintsGeneratorBuilder {
 
-    public static func buildBlock(_ component: LayoutConstraintsGenerator...) -> [LayoutConstraintsGenerator] {
-        component
+    public static func buildBlock(_ component: [LayoutConstraintsGenerator]...) -> [LayoutConstraintsGenerator] {
+        component.flatMap { $0 }
+    }
+
+    public static func buildExpression(
+        _ expression: LayoutConstraintsGenerator
+    ) -> [LayoutConstraintsGenerator] {
+        [expression]
+    }
+
+    public static func buildIf(_ component: [LayoutConstraintsGenerator]?) -> [LayoutConstraintsGenerator] {
+        if let component = component {
+            return component
+        } else {
+            return []
+        }
     }
 }

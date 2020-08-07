@@ -87,15 +87,15 @@ extension Edges: LayoutConstraintsGenerator {
         self.init(edge, .lessThanOrEqual, to: item, insets: .systemSpacing(multiplier))
     }
     #else
-    public init(_ edge: Edge = Edge.Element.all, equalTo item: LayoutItem, insets: Insets = .zero) {
+    public init(_ edge: Edge = Edge.all, equalTo item: LayoutItem, insets: Insets = .zero) {
         self.init(edge, .equal, to: item, insets: insets)
     }
 
-    public init(_ edge: Edge = Edge.Element.all, outsideOrEqualTo item: LayoutItem, insets: Insets = .zero) {
+    public init(_ edge: Edge = Edge.all, outsideOrEqualTo item: LayoutItem, insets: Insets = .zero) {
         self.init(edge, .greaterThanOrEqual, to: item, insets: insets)
     }
 
-    public init(_ edge: Edge = Edge.Element.all, insideOrEqualTo item: LayoutItem, insets: Insets = .zero) {
+    public init(_ edge: Edge = Edge.all, insideOrEqualTo item: LayoutItem, insets: Insets = .zero) {
         self.init(edge, .lessThanOrEqual, to: item, insets: insets)
     }
 
@@ -103,10 +103,21 @@ extension Edges: LayoutConstraintsGenerator {
 
     private func makeEqualEdgeInsetsConstraints(for item: LayoutItem, insets: Insets) -> [NSLayoutConstraint] {
         item.anchor {
-            Left(equalTo: secondItem.leftAnchor, constant: insets.left)
-            Right(equalTo: secondItem.rightAnchor, constant: -insets.right)
-            Top(equalTo: secondItem.topAnchor, constant: insets.top)
-            Bottom(equalTo: secondItem.bottomAnchor, constant: -insets.bottom)
+            if edge.contains(.left) {
+                Left(equalTo: secondItem.leftAnchor, constant: insets.left)
+            }
+
+            if edge.contains(.right) {
+                Right(equalTo: secondItem.rightAnchor, constant: -insets.right)
+            }
+
+            if edge.contains(.top) {
+                Top(equalTo: secondItem.topAnchor, constant: insets.top)
+            }
+
+            if edge.contains(.bottom) {
+                Bottom(equalTo: secondItem.bottomAnchor, constant: -insets.bottom)
+            }
         }
     }
 
@@ -114,10 +125,21 @@ extension Edges: LayoutConstraintsGenerator {
         for item: LayoutItem, insets: Insets
     ) -> [NSLayoutConstraint] {
         item.anchor {
-            Left(lessThanOrEqualTo: secondItem.leftAnchor, constant: insets.left)
-            Right(greaterThanOrEqualTo: secondItem.rightAnchor, constant: -insets.right)
-            Top(lessThanOrEqualTo: secondItem.topAnchor, constant: insets.top)
-            Bottom(greaterThanOrEqualTo: secondItem.bottomAnchor, constant: -insets.bottom)
+            if edge.contains(.left) {
+                Left(lessThanOrEqualTo: secondItem.leftAnchor, constant: insets.left)
+            }
+
+            if edge.contains(.right) {
+                Right(greaterThanOrEqualTo: secondItem.rightAnchor, constant: -insets.right)
+            }
+
+            if edge.contains(.top) {
+                Top(lessThanOrEqualTo: secondItem.topAnchor, constant: insets.top)
+            }
+
+            if edge.contains(.bottom) {
+                Bottom(greaterThanOrEqualTo: secondItem.bottomAnchor, constant: -insets.bottom)
+            }
         }
     }
 
@@ -126,10 +148,21 @@ extension Edges: LayoutConstraintsGenerator {
     ) -> [NSLayoutConstraint] {
 
         item.anchor {
-            Left(greaterThanOrEqualTo: secondItem.leftAnchor, constant: insets.left)
-            Right(lessThanOrEqualTo: secondItem.rightAnchor, constant: -insets.right)
-            Top(greaterThanOrEqualTo: secondItem.topAnchor, constant: insets.top)
-            Bottom(lessThanOrEqualTo: secondItem.bottomAnchor, constant: -insets.bottom)
+            if edge.contains(.left) {
+                Left(greaterThanOrEqualTo: secondItem.leftAnchor, constant: insets.left)
+            }
+
+            if edge.contains(.right) {
+                Right(lessThanOrEqualTo: secondItem.rightAnchor, constant: -insets.right)
+            }
+
+            if edge.contains(.top) {
+                Top(greaterThanOrEqualTo: secondItem.topAnchor, constant: insets.top)
+            }
+
+            if edge.contains(.bottom) {
+                Bottom(lessThanOrEqualTo: secondItem.bottomAnchor, constant: -insets.bottom)
+            }
         }
     }
 
@@ -139,10 +172,21 @@ extension Edges: LayoutConstraintsGenerator {
         multiplier: CGFloat
     ) -> [NSLayoutConstraint] {
         item.anchor {
-            Left(equalToSystemSpacingAfter: secondItem.leftAnchor, multiplier: multiplier)
-            Right(equalToSystemSpacingAfter: secondItem.rightAnchor, multiplier: -multiplier)
-            Top(equalToSystemSpacingBelow: secondItem.topAnchor, multiplier: multiplier)
-            Bottom(equalToSystemSpacingBelow: secondItem.bottomAnchor, multiplier: -multiplier)
+            if edge.contains(.left) {
+                Left(equalToSystemSpacingAfter: secondItem.leftAnchor, multiplier: multiplier)
+            }
+
+            if edge.contains(.right) {
+                Right(equalToSystemSpacingAfter: secondItem.rightAnchor, multiplier: -multiplier)
+            }
+
+            if edge.contains(.top) {
+                Top(equalToSystemSpacingBelow: secondItem.topAnchor, multiplier: multiplier)
+            }
+
+            if edge.contains(.bottom) {
+                Bottom(equalToSystemSpacingBelow: secondItem.bottomAnchor, multiplier: -multiplier)
+            }
         }
     }
 
@@ -151,10 +195,18 @@ extension Edges: LayoutConstraintsGenerator {
         multiplier: CGFloat
     ) -> [NSLayoutConstraint] {
         item.anchor {
-            Left(greaterThanOrEqualToSystemSpacingAfter: secondItem.leftAnchor, multiplier: multiplier)
-            Right(lessThanOrEqualToSystemSpacingAfter: secondItem.rightAnchor, multiplier: -multiplier)
-            Top(greaterThanOrEqualToSystemSpacingBelow: secondItem.topAnchor, multiplier: multiplier)
-            Bottom(lessThanOrEqualToSystemSpacingBelow: secondItem.bottomAnchor, multiplier: -multiplier)
+            if edge.contains(.left) {
+                Left(greaterThanOrEqualToSystemSpacingAfter: secondItem.leftAnchor, multiplier: multiplier)
+            }
+            if edge.contains(.right) {
+                Right(lessThanOrEqualToSystemSpacingAfter: secondItem.rightAnchor, multiplier: -multiplier)
+            }
+            if edge.contains(.top) {
+                Top(greaterThanOrEqualToSystemSpacingBelow: secondItem.topAnchor, multiplier: multiplier)
+            }
+            if edge.contains(.bottom) {
+                Bottom(lessThanOrEqualToSystemSpacingBelow: secondItem.bottomAnchor, multiplier: -multiplier)
+            }
         }
     }
 
@@ -163,10 +215,21 @@ extension Edges: LayoutConstraintsGenerator {
         multiplier: CGFloat
     ) -> [NSLayoutConstraint] {
         item.anchor {
-            Left(lessThanOrEqualToSystemSpacingAfter: secondItem.leftAnchor, multiplier: multiplier)
-            Right(greaterThanOrEqualToSystemSpacingAfter: secondItem.rightAnchor, multiplier: -multiplier)
-            Top(lessThanOrEqualToSystemSpacingBelow: secondItem.topAnchor, multiplier: multiplier)
-            Bottom(greaterThanOrEqualToSystemSpacingBelow: secondItem.bottomAnchor, multiplier: -multiplier)
+            if edge.contains(.left) {
+                Left(lessThanOrEqualToSystemSpacingAfter: secondItem.leftAnchor, multiplier: multiplier)
+            }
+
+            if edge.contains(.right) {
+                Right(greaterThanOrEqualToSystemSpacingAfter: secondItem.rightAnchor, multiplier: -multiplier)
+            }
+
+            if edge.contains(.top) {
+                Top(lessThanOrEqualToSystemSpacingBelow: secondItem.topAnchor, multiplier: multiplier)
+            }
+
+            if edge.contains(.bottom) {
+                Bottom(greaterThanOrEqualToSystemSpacingBelow: secondItem.bottomAnchor, multiplier: -multiplier)
+            }
         }
     }
     #endif
@@ -259,17 +322,25 @@ public extension Edges.Edge {
     }
 }
 #elseif os(macOS)
-public extension NSRectEdge {
+public extension Set where Element == NSRectEdge {
     static var all: Set<NSRectEdge> {
-        NSRectEdge.horizontal.union(NSRectEdge.vertical)
+        vertical.union(Self.horizontal)
     }
 
     static var vertical: Set<NSRectEdge> {
-        [.minY, .maxY]
+        [.top, .bottom]
     }
 
     static var horizontal: Set<NSRectEdge> {
-        [.minX, .minY]
+        [.right, .left]
     }
+}
+
+private extension NSRectEdge {
+
+    static let left = NSRectEdge.minX
+    static let right = NSRectEdge.maxX
+    static let top = NSRectEdge.minY
+    static let bottom = NSRectEdge.maxY
 }
 #endif
