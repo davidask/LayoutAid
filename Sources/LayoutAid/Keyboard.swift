@@ -38,26 +38,26 @@ public final class Keyboard {
         }
     }
 
-    enum Event {
+    public enum Event {
         case willChangeFrame
         case willShow
         case willHide
     }
 
-    class Observer: Equatable {
-        var callback: (Animator?) -> Void
-        let event: Event
+    public class Observer: Equatable {
+        fileprivate var callback: (Animator?) -> Void
+        public let event: Event
 
-        func remove() {
+        public func remove() {
             Keyboard.removeObserver(self)
         }
 
-        init(event: Event, block: @escaping (Animator?) -> Void) {
+        fileprivate init(event: Event, block: @escaping (Animator?) -> Void) {
             self.event = event
             self.callback = block
         }
 
-        static func == (lhs: Observer, rhs: Observer) -> Bool {
+        public static func == (lhs: Observer, rhs: Observer) -> Bool {
             return lhs === rhs
         }
     }
@@ -65,7 +65,7 @@ public final class Keyboard {
     private static var observers: [Observer] = [] {
         didSet {
             if observers.isEmpty {
-                unregisterForKeyboardNotifications()
+                deregisterForKeyboardNotifications()
             } else {
                 registerForKeyboardNotificationsIfNeeded()
             }
@@ -122,7 +122,7 @@ public final class Keyboard {
         isObservingKeyboardNotifications = true
     }
 
-    static func unregisterForKeyboardNotifications() {
+    static func deregisterForKeyboardNotifications() {
         for notificationName in keyboardNotificationNames {
             NotificationCenter.default.removeObserver(
                 self,
@@ -152,13 +152,13 @@ public final class Keyboard {
     }
 
     @discardableResult
-    static func addObserver(for event: Event, _ body: @escaping (Animator?) -> Void) -> Observer {
+    public static func addObserver(for event: Event, _ body: @escaping (Animator?) -> Void) -> Observer {
         let observer = Observer(event: event, block: body)
         observers.append(observer)
         return observer
     }
 
-    static func removeObserver(_ observer: Observer) {
+    public static func removeObserver(_ observer: Observer) {
         observers = observers.filter { existing in
             existing != observer
         }
@@ -172,7 +172,7 @@ public final class Keyboard {
 
     // MARK: - Notification handling
     @objc
-    static func handleKeyboardNotification(notification: Notification) {
+    private static func handleKeyboardNotification(notification: Notification) {
 
         guard let userInfo = notification.userInfo else {
             return
@@ -185,7 +185,6 @@ public final class Keyboard {
         switch notification.name {
 
         case UIResponder.keyboardWillChangeFrameNotification:
-
             withObservers(for: .willChangeFrame) { observer in
                 observer.callback(animator)
             }
@@ -208,12 +207,12 @@ public final class Keyboard {
     }
 
     @objc
-    static func handleApplicationNotification(notification: Notification) {
+    private static func handleApplicationNotification(notification: Notification) {
 
         switch notification.name {
 
         case UIApplication.willResignActiveNotification:
-            unregisterForKeyboardNotifications()
+            deregisterForKeyboardNotifications()
 
         case UIApplication.didBecomeActiveNotification:
             registerForKeyboardNotificationsIfNeeded()
