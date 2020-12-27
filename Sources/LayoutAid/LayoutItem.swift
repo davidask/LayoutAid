@@ -27,8 +27,8 @@ public protocol LayoutItem {
     var heightAnchor: NSLayoutDimension { get }
 }
 
-extension View: LayoutItem {}
-extension LayoutGuide: LayoutItem {}
+extension LayoutAidView: LayoutItem {}
+extension LayoutAidGuide: LayoutItem {}
 
 public extension LayoutItem {
 

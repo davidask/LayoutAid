@@ -3,11 +3,11 @@ import XCTest
 
 #if canImport(UIKit)
 import UIKit
-typealias BaseView = View
+typealias BaseView = LayoutAidView
 #elseif canImport(AppKit)
 import AppKit
 
-class BaseView: View {
+class BaseView: LayoutAidView {
     override var isFlipped: Bool {
         true
     }
@@ -18,7 +18,7 @@ class BaseView: View {
 // swiftlint:disable type_body_length
 final class ConstraintsBuilderTests: XCTestCase {
 
-    var containerView: View!
+    var containerView: LayoutAidView!
 
     let containerSize = CGSize(width: 1_024, height: 1_024)
 
@@ -33,7 +33,7 @@ final class ConstraintsBuilderTests: XCTestCase {
         containerView = nil
     }
 
-    private func layout(view: View) {
+    private func layout(view: LayoutAidView) {
         #if canImport(UIKit)
         containerView.layoutIfNeeded()
         #elseif canImport(AppKit)
@@ -42,10 +42,10 @@ final class ConstraintsBuilderTests: XCTestCase {
     }
 
     private func createLayoutedView(
-        in superview: View,
+        in superview: LayoutAidView,
         caller: StaticString = #function,
         @LayoutConstraintsGeneratorBuilder _ content: () -> [LayoutConstraintsGenerator]
-    ) -> View {
+    ) -> LayoutAidView {
 
         let view = BaseView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -261,7 +261,7 @@ final class ConstraintsBuilderTests: XCTestCase {
     func testPerformance() {
 
         measure {
-            let view = View()
+            let view = BaseView()
             view.translatesAutoresizingMaskIntoConstraints = false
             containerView.addSubview(view)
 
@@ -279,7 +279,7 @@ final class ConstraintsBuilderTests: XCTestCase {
     func testFallbackPerformance() {
 
         measure {
-            let view = View()
+            let view = BaseView()
             view.translatesAutoresizingMaskIntoConstraints = false
             containerView.addSubview(view)
 

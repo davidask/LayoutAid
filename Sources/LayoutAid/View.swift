@@ -1,13 +1,13 @@
 #if canImport(UIKit)
 import UIKit
-public typealias View = UIView
+public typealias LayoutAidView = UIView
 #elseif canImport(AppKit)
 import AppKit
-public typealias View = NSView
+public typealias LayoutAidView = NSView
 #endif
 
-public extension View {
-    var ancestors: AnyIterator<View> {
+public extension LayoutAidView {
+    var ancestors: AnyIterator<LayoutAidView> {
 
         var current = self
 
@@ -21,7 +21,7 @@ public extension View {
         }
     }
 
-    var decendants: AnyIterator<View> {
+    var decendants: AnyIterator<LayoutAidView> {
         var foundSubviews = subviews
 
         return AnyIterator {

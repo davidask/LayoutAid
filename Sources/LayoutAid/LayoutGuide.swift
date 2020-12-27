@@ -1,7 +1,7 @@
 #if canImport(UIKit)
 import UIKit
-public typealias LayoutGuide = UILayoutGuide
+public typealias LayoutAidGuide = UILayoutGuide
 #elseif canImport(AppKit)
 import AppKit
-public typealias LayoutGuide = NSLayoutGuide
+public typealias LayoutAidGuide = NSLayoutGuide
 #endif
